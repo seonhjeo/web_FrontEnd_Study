@@ -3,17 +3,34 @@
 <body>
 	<div id="root"></div>
 </body>
-<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-<script>
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+	function Btn({text, changeValue}) {
+		return <button
+			onClick={changeValue}
+			style={{
+			backgroundColor: "tomato",
+			color:"white",
+			padding:"10px 20px",
+			border:0,
+			borderRadius:20,
+		}}>{text}</button>
+	}
+
+	function App() {
+		const [value, setValue] = React.useState("Save Changes");
+		const changeValue = () => setValue("Revert Changes");
+		const MemorizedBtn = React.memo(Btn)
+		return (
+			<div>
+				<MemorizedBtn text={value} changeValue={changeValue}/>
+				<MemorizedBtn text="Continue"/>
+			</div>
+		)
+	}
 	const root = document.getElementById("root");
-	const h3 = React.createElement("h3", {
-		onMouseEnter: () => console.log("Mouse Enter"),
-	}, "Hello World!");
-	const btn = React.createElement("button", {
-		onClick: () => console.log("I'm clcked"),
-	}, "Click me");
-	const container = React.createElement("div", null, [h3, btn]);
-	ReactDOM.render(container, root);
+	ReactDOM.render(<App />, root);
 </script>
 </html>
